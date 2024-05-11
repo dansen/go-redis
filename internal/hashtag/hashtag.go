@@ -47,6 +47,7 @@ var crc16tab = [256]uint16{
 	0x6e17, 0x7e36, 0x4e55, 0x5e74, 0x2e93, 0x3eb2, 0x0ed1, 0x1ef0,
 }
 
+// key中有{}，则返回{}中的内容，否则返回key
 func Key(key string) string {
 	if s := strings.IndexByte(key, '{'); s > -1 {
 		if e := strings.IndexByte(key[s+1:], '}'); e > 0 {
@@ -60,13 +61,16 @@ func RandomSlot() int {
 	return rand.Intn(slotNumber)
 }
 
+// 通过key计算slot，slot是一个0-16383的数字
 // Slot returns a consistent slot number between 0 and 16383
 // for any given string key.
 func Slot(key string) int {
 	if key == "" {
 		return RandomSlot()
 	}
+	// 检查 key 中是否有 {}，如果有则取 {} 中的内容
 	key = Key(key)
+	// 计算 crc16sum(key) % slotNumber
 	return int(crc16sum(key)) % slotNumber
 }
 

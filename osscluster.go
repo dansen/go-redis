@@ -1798,6 +1798,7 @@ func cmdSlot(cmd Cmder, pos int) int {
 	return hashtag.Slot(firstKey)
 }
 
+// 通过 slot 获取 node
 func (c *ClusterClient) cmdNode(
 	ctx context.Context,
 	cmdName string,
